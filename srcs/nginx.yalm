@@ -1,35 +1,36 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app: nginx
   name: nginx
 spec:
+  ports:
+  - name: 8080-80
+    nodePort: 1891
+    port: 8080
+    protocol: TCP
+    targetPort: 80
   selector:
     app: nginx
-  ports:
-
-
---
+  type: NodePort
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
+  labels:
+    app: nginx
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      run: nginx
+      app: nginx
   template:
     metadata:
       labels:
-        run: nginx
+        app: nginx
     spec:
       containers:
+      - name: nginx
         image: nginx:ssh
-        name: nginx
-		ports:
-        - containerPort: 80
-          name: http
-        - containerPort: 443
-          name: https
-        - containerPort: 4000
-          name: ssh
+---
