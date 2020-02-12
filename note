@@ -1,0 +1,43 @@
+-> lancer minikube:
+
+minikube start
+
+-> lancer un deployment en LDC (sur une image busybox?):
+
+kubectl run NAME -it --image IMAGE -- sh
+kubectl delete deployment NAME
+kubectl delete pods ID
+kubectl create deploy monnginx --image nginx
+
+kubectl get deploy nginx -o yaml > mondeploy.yaml
+kubectl get service MONSERVICE -o yaml > monnservice.yaml
+
+kubectl create service nodeport monnginx --tcp=8080:80
+kubectl get service nginx -o yaml > monservice.yaml
+
+concatener les 2 fichiers :
+cat mondeploy.yaml monservices.yaml >appli.yaml
+
+kubectl apply -f monservice.yaml
+
+-> DASHBOARD
+
+-> INGRESS
+
+-> NGINX
+voir ssh ?
+tester Dockerfile, puis cree le .yalm (deploy + service) a partir de kubernet
+
+-> FTPS
+
+-> WORDPRESS
+service
+deploy
+PersistentVolume
+PersistentVolumeCLaim
+
+-> MYSQL
+
+-> PHPMYADMIN
+
+-> GRAFANA
