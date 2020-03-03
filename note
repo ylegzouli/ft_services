@@ -1,12 +1,11 @@
 https://github.com/flavienfr/ft_services
+https://github.com/nicokla/ft_services
 
 -> lancer minikube:
-
 minikube start
 minikube start --vm-driver=virtualbox --extra-config=apiserver.service-node-port-range=1-10000
 
 -> lancer un deployment en LDC (sur une image busybox?):
-
 kubectl run NAME -it --image IMAGE -- sh
 kubectl delete deployment NAME
 kubectl delete pods ID
@@ -18,37 +17,27 @@ kubectl get service MONSERVICE -o yaml > monnservice.yaml
 kubectl create service nodeport monnginx --tcp=8080:80
 kubectl get service nginx -o yaml > monservice.yaml
 
-concatener les 2 fichiers :
-cat mondeploy.yaml monservices.yaml >appli.yaml
-
 kubectl apply -f monservice.yaml
-
 kubectl create --save-config
 
 
 -> DASHBOARD
 https://www.dadall.info/article660/le-dashboard-de-kubernetes
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
-
 token:
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 
--> INGRESS
-
 -> NGINX
-voir ssh ?
-revoir key_rsa
+-> INGRESS
 
 -> FTPS
 
 -> WORDPRESS
-service
-deploy
-PersistentVolume
-PersistentVolumeCLaim
-
+-> PHPMYADMIN
 -> MYSQL
 
--> PHPMYADMIN
-
 -> GRAFANA
+https://blog.octo.com/monitorer-votre-infra-avec-telegraf-influxdb-et-grafana/
+-> INFLUX DB
+-> TELEGRAF
+
