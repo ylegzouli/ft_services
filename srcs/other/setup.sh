@@ -1,30 +1,3 @@
-#!/bin/sh
-
-wait_for_deploy () {
-	printf "\e[0;34mWaiting for \e[0;35m"$1"\e[0;34m...\e[0m"
-	sleep 5s
-	export "$1"_POD=$( kubectl get pods -l app=$1 -o custom-columns=:metadata.name | tr -d '[:space:]' )
-	export POD_TEMP=${1}_POD
-	while [ "$( kubectl get pod ${!POD_TEMP} -o json | jq ".status.containerStatuses[0].ready" | tr -d '[:space:]' )" != "true" ]; do
-		printf "\e[0;34m.\e[0m"
-		sleep 5s
-		export "$1"_POD=$( kubectl get pods -l app=$1 -o custom-columns=:metadata.name | tr -d '[:space:]' )
-		export POD_TEMP=${1}_POD
-	done
-	sleep 2s
-	printf "\e[0;34mDONE\e[0m\n"
-}
-
-
-# Ensure docker and minikube are installed
-if ! which docker >/dev/null 2>&1 ||
-    ! which minikube >/dev/null 2>&1
-then
-    echo Please install Docker and Minikube
-    exit 1
-fi
-
-# Ensure minikube is launched
 if ! minikube status >/dev/null 2>&1
 then
     echo Minikube is not started! Starting now...
