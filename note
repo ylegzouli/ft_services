@@ -2,6 +2,8 @@ https://github.com/flavienfr/ft_services
 https://github.com/nicokla/ft_services
 
 -> lancer minikube:
+export MINIKUBE_HOME=~/goinfre/
+minikube config set vm-driver virtualbox
 minikube start
 minikube start --vm-driver=virtualbox --extra-config=apiserver.service-node-port-range=1-10000
 
@@ -20,6 +22,8 @@ kubectl get service nginx -o yaml > monservice.yaml
 kubectl apply -f monservice.yaml
 kubectl create --save-config
 
+docker build -t ylegzouli/nginx:ssh .
+    minikube addons enable ingress
 
 -> DASHBOARD
 https://www.dadall.info/article660/le-dashboard-de-kubernetes
