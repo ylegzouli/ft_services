@@ -34,7 +34,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: grafana
-        image: my-grafana
+        image: ylegzoul/grafana
         imagePullPolicy: Never
         ports:
         - containerPort: 3000

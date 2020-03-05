@@ -24,12 +24,12 @@ export MINIKUBE_IP=$(minikube ip)
 
 eval $(minikube docker-env)
 
-	docker build -t my-nginx srcs/nginx
-	docker build -t my-ftps srcs/ftps
-	docker build -t my-mysql srcs/mysql
-	docker build -t my-phpmyadmin srcs/phpmyadmin
-	docker build -t my-wordpress srcs/wordpress
-	docker build -t my-grafana srcs/grafana
+	docker build -t ylegzoul/nginx srcs/nginx
+	docker build -t ylegzoul/ftps srcs/ftps
+	docker build -t ylegzoul/mysql srcs/mysql
+	docker build -t ylegzoul/phpmyadmin srcs/phpmyadmin
+	docker build -t ylegzoul/wordpress srcs/wordpress
+	docker build -t ylegzoul/grafana srcs/grafana
 
 	kubectl apply -k srcs
 
@@ -39,7 +39,6 @@ eval $(minikube docker-env)
 #ssh root@$MINIKUBE_IP -p 30022
 #cat /etc/issue
 
-# 192.168.99.131:<port>
 # phpmyadmin: 5000
 # wordpress: 5050
 # grafana: 3000

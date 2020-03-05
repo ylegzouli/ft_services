@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: my-nginx
+        image: ylegzoul/nginx
         imagePullPolicy: Never
         ports:
         - containerPort: 80

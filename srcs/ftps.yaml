@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: ftps
-        image: my-ftps
+        image: ylegzoul/ftps
         imagePullPolicy: Never
         env:
         - name: FTP_USER

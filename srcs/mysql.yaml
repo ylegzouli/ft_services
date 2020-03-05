@@ -65,7 +65,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: mysql
-        image: my-mysql
+        image: ylegzoul/mysql
         imagePullPolicy: Never
         env:
         - name: MYSQL_ROOT

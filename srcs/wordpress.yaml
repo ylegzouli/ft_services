@@ -50,7 +50,7 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-      - image: my-wordpress
+      - image: ylegzoul/wordpress
         imagePullPolicy: Never
         name: wordpress
         env:
