@@ -5,17 +5,29 @@ metadata:
   labels:
     app: ft_services
 spec:
+  type: ClusterIP
   ports:
   - port: 3306
-    targetPort: 3306
   selector:
     app: ft_services
     tier: mysql
-  clusterIP: None
-  externalName: mysql.default
 
 ---
-
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+  labels:
+    type: local
+spec:
+  storageClassName: mysql-db
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: "/data/mysql/"
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -23,18 +35,17 @@ metadata:
   labels:
     app: ft_services
 spec:
+  storageClassName: mysql-db
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
-
+      storage: 1Gi
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql-deployment
   labels:
     app: ft_services
 spec:
@@ -44,6 +55,7 @@ spec:
       tier: mysql
   strategy:
     type: Recreate
+  replicas: 1
   template:
     metadata:
       labels:
@@ -53,20 +65,24 @@ spec:
       restartPolicy: Always
       containers:
       - name: mysql
-        image: custom-mysql:1.11
+        image: my-mysql
         imagePullPolicy: Never
         env:
+        - name: MYSQL_ROOT
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: username
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-pass
+              name: mysql
               key: password
         ports:
         - containerPort: 3306
-          name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
-          mountPath: /app/mysql
+          mountPath: "/data/mysql"
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:

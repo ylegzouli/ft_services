@@ -21,7 +21,7 @@ kubectl get service nginx -o yaml > monservice.yaml
 
 kubectl apply -f monservice.yaml
 kubectl create --save-config
-
+docker rmi -f $(docker images -a -q)
 docker build -t ylegzouli/nginx:ssh .
     minikube addons enable ingress
 
@@ -44,4 +44,15 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 https://blog.octo.com/monitorer-votre-infra-avec-telegraf-influxdb-et-grafana/
 -> INFLUX DB
 -> TELEGRAF
+
+a faire : 
+
+- ficher config wp
+- mdp: ftps, wp, php, influx, grafana
+- voir test ssh ?
+- voir test ftps
+- voir test crash
+- push les img, modif les yaml pour pull les image depuis docker hub.
+
+
 

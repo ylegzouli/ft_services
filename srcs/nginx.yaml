@@ -1,57 +1,78 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
-  labels:
-    app: nginx
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  name: nginx-ssh
 spec:
-  type: NodePort
   ports:
-  - port: 32080
-    targetPort: 80
-    protocol: TCP
-    name: http
-  - port: 32443
-    targetPort: 443
-    protocol: TCP
-    name: https
-  - port: 32022
-    nodePort: 32022
-    targetPort: 22
-    protocol: TCP
-    name: ssh
+    - name: ssh
+      protocol: TCP
+      port: 30022
+      targetPort: 30022
+      nodePort: 30022
   selector:
-    app: nginx
-  externalName: ng.inx
+    app: ft_services
+    tier: nginx
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP 
+      port: 443
+      targetPort: 443
+  selector:
+    app: ft_services
+    tier: nginx
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: nginx-deployment
   labels:
-    app: nginx
-  namespace: default
+    app: ft_services
 spec:
   selector:
     matchLabels:
-      app: nginx
+      app: ft_services
+      tier: nginx
   strategy:
     type: Recreate
+  replicas: 1
   template:
     metadata:
       labels:
-        app: nginx
+        app: ft_services
+        tier: nginx
     spec:
-      restartPolicy: Always
       containers:
       - name: nginx
-        image: nginx_ssh
+        image: my-nginx
         imagePullPolicy: Never
-        # livenessProbe:
-        #   httpGet:
-        #     path: /index.html
-        #     port: 80
-        #   initialDelaySeconds: 30
-        #   timeoutSeconds: 1
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
+        - containerPort: 30022
+          name: ssh
+        env:
+        - name: SSH_USER
+          valueFrom:
+            secretKeyRef:
+              name: ssh
+              key: username
+        - name: SSH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ssh
+              key: password
+    

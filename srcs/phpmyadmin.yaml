@@ -6,42 +6,44 @@ metadata:
     app: ft_services
 spec:
   ports:
-  - port: 80
+  - name: http
+    port: 5000
+    targetPort: 80
+    nodePort: 5000
   selector:
     app: ft_services
-    tier: admin
-  type: LoadBalancer
-
+    tier: phpmyadmin
+  type: NodePort
+  
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: phpmyadmin
+  name: phpmyadmin-deployment
   labels:
     app: ft_services
 spec:
-  strategy:
-    type: Recreate
-  replicas: 1
   selector:
     matchLabels:
       app: ft_services
-      tier: admin
+      tier: phpmyadmin
+  strategy:
+    type: Recreate
+  replicas: 1
   template:
     metadata:
       labels:
         app: ft_services
-        tier: admin
+        tier: phpmyadmin
     spec:
       restartPolicy: Always
       containers:
       - name: phpmyadmin
-        image: custom-phpmyadmin:1.1
+        image: my-phpmyadmin
         imagePullPolicy: Never
         env:
         - name: PMA_HOST
-          value: mysql
+          value: mysql #mysql service name
         ports:
         - containerPort: 80
-          hostPort: 5000

@@ -1,16 +1,29 @@
 secretGenerator:
-- name: mysql-pass
+- name: ssh
   literals:
-  - password=password
+  - username=ylegzoul
+  - password=1234
+- name: mysql
+  literals:
+  - username=root
+  - password=1234
+- name: ftps
+  literals:
+  - username=ylegzoul
+  - password=1234
+
 configMapGenerator:
-- name: telegraf-config-map
+- name: telegraf-config
   files:
-    - telegraf/telegraf.conf
+  - telegraf.conf=telegraf/telegraf-target.conf
+
 resources:
-- nginx.yaml
-- mysql.yaml
-- wordpress.yaml
-- phpmyadmin.yaml
-- ftps.yaml
-- ingress.yaml
-- telegraf.yaml
+  - mysql.yaml
+  - influxdb.yaml
+  - grafana.yaml
+  - ftps.yaml
+  - phpmyadmin.yaml
+  - telegraf.yaml
+  - nginx.yaml
+  - ingress.yaml
+  - wordpress.yaml
