@@ -39,6 +39,9 @@ eval $(minikube docker-env)
 #ssh root@$MINIKUBE_IP -p 30022
 #cat /etc/issue
 
+#kill mysql
+# kubectl exec -it $(kubectl get pods | grep mysql | cut -d" " -f1) -- /bin/sh -c "kill 1"
+
 # phpmyadmin: 5000
 # wordpress: 5050
 # grafana: 3000
