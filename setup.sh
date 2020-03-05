@@ -39,10 +39,10 @@ eval $(minikube docker-env)
 #ssh root@$MINIKUBE_IP -p 30022
 #cat /etc/issue
 
+# 192.168.99.131:<port>
 # phpmyadmin: 5000
 # wordpress: 5050
 # grafana: 3000
-# 192.168.99.131
 
 # ------------------------------------------------------------------------------------
 

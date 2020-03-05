@@ -29,30 +29,44 @@ token:
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 
 -> NGINX
+--ssh--
+user: ylegzoul
+mdp: 1234
+
 -> INGRESS
 
 -> FTPS
+user: ylegzoul
+mdp: 1234
 
 -> WORDPRESS
+
 -> PHPMYADMIN
 -> MYSQL
+user: root
+mdp: 1234
 
 -> GRAFANA
-https://blog.octo.com/monitorer-votre-infra-avec-telegraf-influxdb-et-grafana/
 -> INFLUX DB
 -> TELEGRAF
+https://blog.octo.com/monitorer-votre-infra-avec-telegraf-influxdb-et-grafana/
+https://blog.gojekengineering.com/diy-set-up-telegraf-influxdb-grafana-on-kubernetes-d55e32f8ce48
+
 
 _____________________________________________________________________________________________________________________________
 
 a faire : 
 
+- push les img, modif les yaml pour pull les image depuis docker hub.
+- DASHBOARD KUBERNETES
+
 - ficher config wp
-- mdp: ftps, wp, php, influx, grafana
+
 - voir test ssh ?
 - voir test ftps
 - voir test crash
-- push les img, modif les yaml pour pull les image depuis docker hub.
-- DASHBOARD KUBERNETES
+
+- mdp: ftps, wp, php, influx, grafana
 
 _____________________________________________________________________________________________________________________________
 
