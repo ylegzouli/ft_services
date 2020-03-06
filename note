@@ -38,6 +38,7 @@ mdp: 1234
 -> FTPS
 user: ylegzoul
 mdp: 1234
+test avec ftp client (filezilla) port 21
 
 -> WORDPRESS
 
@@ -57,16 +58,13 @@ ________________________________________________________________________________
 
 a faire : 
 
-- push les img, modif les yaml pour pull les image depuis docker hub.
 - DASHBOARD KUBERNETES
 
 - ficher config wp
 
 - voir test ssh ?
-- voir test ftps
-- voir test crash
 
-- mdp: ftps, wp, php, influx, grafana
+- mdp: influx, grafana
 
 _____________________________________________________________________________________________________________________________
 

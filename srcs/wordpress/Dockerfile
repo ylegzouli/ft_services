@@ -4,7 +4,7 @@ RUN apk update && \
 	apk add nginx mysql-client
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY wordpress.sql /wordpress.sql
+COPY wordpress_target.sql /wordpress.sql
 COPY entrypoint /entrypoint
 
 ENTRYPOINT sh /entrypoint

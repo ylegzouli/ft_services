@@ -1,9 +1,9 @@
 #!/bin/sh
 
-#export MINIKUBE_HOME=~/goinfre/
+export MINIKUBE_HOME=~/goinfre/
 
-#minikube start --vm-driver=virtualbox \
-minikube start \
+#minikube start \
+minikube start --vm-driver=virtualbox \
 	--cpus 3 --disk-size=30000mb --memory=3000mb \
 	--extra-config=apiserver.service-node-port-range=1-31000
     
@@ -16,8 +16,8 @@ export MINIKUBE_IP=$(minikube ip)
 
     cp -f srcs/ftps/vsftpd_sub.conf srcs/ftps/vsftpd.conf
     sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/ftps/vsftpd.conf
-    cp srcs/wordpress/wordpress.sql srcs/wordpress/wordpress.sql
-    sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/wordpress/wordpress.sql
+    cp srcs/wordpress/wordpress.sql srcs/wordpress/wordpress_target.sql
+    sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/wordpress/wordpress_target.sql
     cp srcs/telegraf/telegraf.conf srcs/telegraf/telegraf-target.conf
     sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/telegraf/telegraf-target.conf
 
