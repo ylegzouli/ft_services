@@ -2,6 +2,10 @@
 
 MYSQL="mysql -h $WORDPRESS_DB_HOST -u $WORDPRESS_DB_USER --password=$WORDPRESS_DB_PASSWORD"
 
+conn_error()
+{
+	exit 1
+}
 
 # crash if connection error
 $MYSQL -e '' || conn_error
