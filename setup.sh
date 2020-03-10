@@ -6,7 +6,8 @@ export MINIKUBE_HOME=~/goinfre/
 minikube start --vm-driver=virtualbox \
 	--cpus 3 --disk-size=30000mb --memory=3000mb \
 	--extra-config=apiserver.service-node-port-range=1-31000
-    
+
+minikube addons enable dashboard    
 minikube addons enable ingress
 minikube addons enable metrics-server
 
@@ -22,6 +23,8 @@ export MINIKUBE_IP=$(minikube ip)
     sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/telegraf/telegraf-target.conf
 
 # ------------------------------------------------------------------------------------
+
+	kubeclt delete -k srcs
 
 eval $(minikube docker-env)
 

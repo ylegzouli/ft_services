@@ -59,12 +59,14 @@ ________________________________________________________________________________
 a faire : 
 
 - DASHBOARD KUBERNETES
-
-- ficher config wp
-
 - voir test ssh ?
 
-- mdp: influx, grafana
+- FROM alpine:..
+nginx
+grafana
+phpmyadmin
+wordpress
+
 
 _____________________________________________________________________________________________________________________________
 
