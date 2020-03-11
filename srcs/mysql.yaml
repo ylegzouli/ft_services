@@ -13,51 +13,21 @@ spec:
     tier: mysql
 
 ---
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: mysql-pv
-#  labels:
-#    type: local
-#spec:
-#  storageClassName: mysql-db
-#  accessModes:
-#    - ReadWriteOnce
-#  capacity:
-#    storage: 1Gi
-#  hostPath:
-#    path: "/data/mysql/"
-
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-pv-volume
+  name: mysql-pv
   labels:
     type: local
 spec:
-  storageClassName: manual
-  capacity:
-    storage: 2Gi
+  storageClassName: mysql-db
   accessModes:
     - ReadWriteOnce
+  capacity:
+    storage: 1Gi
   hostPath:
-    path: "/mnt/data"
-
+    path: "/data/mysql/"
 ---
-#apiVersion: v1
-#kind: PersistentVolumeClaim
-#metadata:
-#  name: mysql-pv-claim
-#  labels:
-#    app: ft_services
-#spec:
-#  storageClassName: mysql-db
-#  accessModes:
-#  - ReadWriteOnce
-#  resources:
-#    requests:
-#      storage: 1Gi
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -65,13 +35,12 @@ metadata:
   labels:
     app: ft_services
 spec:
-  storageClassName: manual
+  storageClassName: mysql-db
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
-
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -113,17 +82,8 @@ spec:
         - containerPort: 3306
         volumeMounts:
         - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
+          mountPath: "/data/mysql"
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
-
-
-#        volumeMounts:
-#        - name: mysql-persistent-storage
-#          mountPath: "/data/mysql/"
-#      volumes:
-#      - name: mysql-persistent-storage
-#        persistentVolumeClaim:
-#          claimName: mysql-pv-claim
