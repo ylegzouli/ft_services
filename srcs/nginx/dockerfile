@@ -1,25 +1,32 @@
-FROM nginx:alpine
-RUN apk add --update openssh
+FROM alpine:latest
 
-# SSH keys created with
-# ssh-keygen -t rsa -b 4096 -C "ft_services"
-COPY ssh/sshd_config /sshd_config
-COPY ssh/id_rsa.pub /authorized_keys
-COPY ssh/id_rsa /etc/ssh/ssh_host_rsa_key
+# update && install nginx && bash && openssl && folder for nginx pid
+RUN apk update && apk add nginx \
+&& apk add --no-cache --upgrade bash \
+&& apk add openssl && mkdir -p var/run/nginx \
+&& apk add openssl openssh \
+&& rm -rf /var/cache/apk/*
 
-# SSL keys created with
-# openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-# -subj '/C=FR/ST=75/L=Paris/O=42/CN=name' \
-# -keyout nginx.key -out nginx.crt;
-COPY ssl/nginx.crt /etc/nginx/ssl/nginx.crt
-COPY ssl/nginx.key /etc/nginx/ssl/nginx.key
+# create user for nginx && generate nginx folder && add permissions
+RUN adduser -D -g 'www' www \
+&& mkdir /www && chown -R www:www /var/lib/nginx \
+&& chown -R www:www /www
 
-# nginx setup
-COPY nginx.conf /etc/nginx/nginx.conf
+# SSL
+RUN mkdir /etc/nginx/ssl \
+&& openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/ssl/www.pem -keyout /etc/nginx/ssl/www.key -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=ylegzoul/CN=ft_services"
 
-# entrypoint
-COPY entrypoint /entrypoint
+# Nginx config
+RUN rm /etc/nginx/nginx.conf
 
-ENTRYPOINT sh /entrypoint
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY key_ssh /etc/ssh/ssh_host_rsa_key
+COPY sshd_config /etc/ssh/
 
-EXPOSE 443 80 30022
+COPY setup.sh .
+
+RUN chmod +x setup.sh
+RUN chmod 600 /etc/ssh/ssh_host_rsa_key
+
+EXPOSE 1234 80 443
+CMD ./setup.sh

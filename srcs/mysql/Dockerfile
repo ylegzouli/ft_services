@@ -1,11 +1,21 @@
-FROM alpine
+FROM alpine:latest
 
-RUN apk add --update mysql && rm -f /var/cache/apk/*
+# VOLUME /var/run/docker.sock:/var/run/docker.sock
 
-COPY my.cnf /etc/mysql/my.cnf
-COPY entrypoint /entrypoint
+# Installing
+RUN apk update ; \
+	apk add mariadb mariadb-client && apk add --no-cache --upgrade bash ; \
+	rm -rf /var/cache/apk/*
 
-RUN mkdir /app
+# Copying script and my wordpress database
+COPY ./init_docker.sh .
+COPY ./init_mysql.sh .
+COPY wordpress_target.sql .
+
+RUN chmod 777 init_docker.sh
+RUN chmod 777 init_mysql.sh
 
 EXPOSE 3306
-CMD sh /entrypoint
+
+# Starting script
+ENTRYPOINT [ "./init_docker.sh" ]

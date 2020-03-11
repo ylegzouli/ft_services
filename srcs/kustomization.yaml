@@ -6,7 +6,7 @@ secretGenerator:
 - name: mysql
   literals:
   - username=root
-  - password=1234
+  - password=root
 - name: ftps
   literals:
   - username=ylegzoul

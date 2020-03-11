@@ -3,47 +3,43 @@ kind: Service
 metadata:
   name: phpmyadmin
   labels:
-    app: ft_services
+    app: phpmyadmin-app
 spec:
-  ports:
-  - name: http
-    port: 5000
-    targetPort: 80
-    nodePort: 5000
-  selector:
-    app: ft_services
-    tier: phpmyadmin
   type: NodePort
-  
+  ports:
+  - port: 5000
+    nodePort: 5000
+    protocol: TCP
+    name: http
+  selector:
+    app: phpmyadmin-app
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: phpmyadmin-deployment
   labels:
-    app: ft_services
+    app: phpmyadmin-app
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: ft_services
-      tier: phpmyadmin
-  strategy:
-    type: Recreate
-  replicas: 1
+      app: phpmyadmin-app
   template:
     metadata:
       labels:
-        app: ft_services
-        tier: phpmyadmin
+        app: phpmyadmin-app
     spec:
-      restartPolicy: Always
       containers:
       - name: phpmyadmin
         image: ylegzoul/phpmyadmin
+        ports:
+        - containerPort: 5000
         imagePullPolicy: Never
         env:
-        - name: PMA_HOST
-          value: mysql #mysql service name
-        ports:
-        - containerPort: 80
+          - name: PMA_HOST
+            value: mysql
+          - name: PMA_PORT
+            value: "3306"
+          - name: PMA_USER
+            value: root

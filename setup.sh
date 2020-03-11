@@ -17,14 +17,16 @@ export MINIKUBE_IP=$(minikube ip)
 
     cp -f srcs/ftps/vsftpd_sub.conf srcs/ftps/vsftpd.conf
     sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/ftps/vsftpd.conf
-    cp srcs/wordpress/wordpress.sql srcs/wordpress/wordpress_target.sql
-    sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/wordpress/wordpress_target.sql
+    cp srcs/mysql/wordpress.sql srcs/mysql/wordpress_target.sql
+    sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/mysql/wordpress_target.sql
     cp srcs/telegraf/telegraf.conf srcs/telegraf/telegraf-target.conf
     sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/telegraf/telegraf-target.conf
 
+    cp srcs/wordpress/wp-config.php srcs/wordpress/wp-config.php.new
+	sed -i '' "s/##MINIKUBE_IP##/$MINIKUBE_IP/g" srcs/wordpress/wp-config.php.new
 # ------------------------------------------------------------------------------------
 
-	kubeclt delete -k srcs
+	kubectl delete -k srcs
 
 eval $(minikube docker-env)
 
@@ -40,15 +42,23 @@ eval $(minikube docker-env)
 # ------------------------------------------------------------------------------------
 
 #minikube dashboard
-#ssh root@$MINIKUBE_IP -p 30022
-#cat /etc/issue
 
-#kill mysql
+# Test ssh:
+#ssh ylegzoul@$MINIKUBE_IP -p 30022
+
+# Kill mysql:
 # kubectl exec -it $(kubectl get pods | grep mysql | cut -d" " -f1) -- /bin/sh -c "kill 1"
 
-# phpmyadmin: 5000
-# wordpress: 5050
-# grafana: 3000
+# Acces:
+# phpmyadmin: 5000   root root
+# wordpress: 5050 ylegzoul 1234
+# grafana: 3000 
+# ftps: 21 ylegzoul 1234
+# ssh: 30022 ylegzoul 1234
+
+# Save grafana.db:
+# kubectl cp grafana-deployment-c4bcbd76c-9tj8p:/grafana-6.6.0/data/grafana.db grafana.db
+
 
 # ------------------------------------------------------------------------------------
 

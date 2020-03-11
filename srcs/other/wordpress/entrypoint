@@ -22,4 +22,5 @@ sed -i 's/^exec .*//' /usr/local/bin/docker-entrypoint.sh
 docker-entrypoint.sh php-fpm
 
 # run
-/usr/sbin/nginx && /usr/local/sbin/php-fpm
+php -S 0.0.0.0:5050 -t /www/
+#/usr/sbin/nginx && /usr/local/sbin/php-fpm
