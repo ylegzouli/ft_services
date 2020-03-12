@@ -20,13 +20,13 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: mysql-db
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 1Gi
+    storage: 2Gi
   hostPath:
-    path: "/data/mysql/"
+    path: "/mnt/data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -35,12 +35,12 @@ metadata:
   labels:
     app: ft_services
 spec:
-  storageClassName: mysql-db
+  storageClassName: manual
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -82,7 +82,7 @@ spec:
         - containerPort: 3306
         volumeMounts:
         - name: mysql-persistent-storage
-          mountPath: "/data/mysql"
+          mountPath: /var/lib/mysql
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
