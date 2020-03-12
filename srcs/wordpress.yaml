@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: wordpress-svc
   labels:
-    app: ft_services
+    app: wordpress-app
 spec:
   type: NodePort
   ports:
@@ -12,36 +12,23 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: ft_services
----
-#apiVersion: v1
-#kind: PersistentVolumeClaim
-#metadata:
-#  name: wordpress-pv-claim
-#  labels:
-#    app: ft_services
-#spec:
-#  accessModes:
-#  - ReadWriteOnce
-#  resources:
-#    requests:
-#      storage: 1Gi
+    app: wordpress-app
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress-deployment
   labels:
-    app: ft_services
+    app: wordpress-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ft_services
+      app: wordpress-app
   template:
     metadata:
       labels:
-        app: ft_services
+        app: wordpress-app
     spec:
       containers:
       - name: wordpress
@@ -58,10 +45,4 @@ spec:
             value: root
           - name: DB_HOST
             value: mysql
-#        volumeMounts:
-#        - name: wordpress-persistent-storage
-#          mountPath: /var/www/html
-#      volumes:
-#      - name: wordpress-persistent-storage
-#        persistentVolumeClaim:
-#          claimName: wordpress-pv-claim
+

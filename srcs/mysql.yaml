@@ -67,17 +67,17 @@ spec:
       - name: mysql
         image: ylegzoul/mysql
         imagePullPolicy: Never
-#        env:
-#        - name: MYSQL_ROOT
-#          valueFrom:
-#            secretKeyRef:
-#              name: mysql
-#              key: username
-#        - name: MYSQL_ROOT_PASSWORD
-#          valueFrom:
-#            secretKeyRef:
-#              name: mysql
-#              key: password
+        env:
+        - name: MYSQL_ROOT
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: username
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: password
         ports:
         - containerPort: 3306
         volumeMounts:
